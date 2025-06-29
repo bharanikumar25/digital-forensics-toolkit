@@ -1,0 +1,27 @@
+import hashlib
+
+def calculate_hash(file_path):
+    sha256_hash = hashlib.sha256()
+    try:
+        with open(file_path, "rb") as f:
+            for byte_block in iter(lambda: f.read(4096), b""):
+                sha256_hash.update(byte_block)
+        return sha256_hash.hexdigest()
+    except FileNotFoundError:
+        return "File not found."
+
+
+file_path = "E:/Recovered/file.jpg"  
+expected_hash = "your_known_sha256_hash_here" 
+
+
+print("\nCalculating SHA-256 hash for:", file_path)
+actual_hash = calculate_hash(file_path)
+print("Actual Hash:  ", actual_hash)
+print("Expected Hash:", expected_hash)
+
+
+if actual_hash == expected_hash:
+    print("\n✅ Hash Match: File is authentic and unaltered.")
+else:
+    print("\n❌ Hash Mismatch: File may be modified or corrupted.")
